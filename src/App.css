@@ -78,13 +78,25 @@ body {
   border-radius: 4px;
 }
 
+.dark ::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
 ::-webkit-scrollbar-thumb {
   background: #c5c5c5;
   border-radius: 4px;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+  background: #555;
+}
+
 ::-webkit-scrollbar-thumb:hover {
   background: #a0a0a0;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #777;
 }
 
 .glass-card {
@@ -95,8 +107,22 @@ body {
   box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
 }
 
+.dark .glass-card {
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
 .text-gradient {
   background: linear-gradient(90deg, #0D6EFD, #0A58CA);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.dark .text-gradient {
+  background: linear-gradient(90deg, #3B82F6, #60A5FA);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -114,4 +140,8 @@ body {
 :focus-visible {
   outline: 2px solid #0D6EFD;
   outline-offset: 2px;
+}
+
+.dark :focus-visible {
+  outline: 2px solid #3B82F6;
 }
