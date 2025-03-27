@@ -52,13 +52,13 @@ const Testimonials = () => {
   }, []);
 
   return (
-    <section ref={testimonialsRef} className="py-20 bg-white">
+    <section ref={testimonialsRef} className="py-20 bg-gray-800 text-white">
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <h2 className="animate-on-scroll opacity-0 text-3xl md:text-4xl font-bold tracking-tight">
+          <h2 className="animate-on-scroll opacity-0 text-3xl md:text-4xl font-bold tracking-tight text-white">
             What Our <span className="text-gradient">Customers</span> Say
           </h2>
-          <p className="animate-on-scroll opacity-0 text-lg text-gray-600 animation-delay-200">
+          <p className="animate-on-scroll opacity-0 text-lg text-gray-300 animation-delay-200">
             Discover how Botalk is helping businesses transform their customer interactions.
           </p>
         </div>
@@ -68,25 +68,25 @@ const Testimonials = () => {
             <div
               key={index}
               className={cn(
-                "animate-on-scroll opacity-0 bg-gray-50 rounded-xl p-6 border border-gray-100 shadow-card relative",
+                "animate-on-scroll opacity-0 bg-gray-700 rounded-xl p-6 border border-gray-600 shadow-card relative",
                 index % 2 === 0 ? "animation-delay-200" : "animation-delay-500"
               )}
             >
-              <Quote className="absolute top-6 left-6 w-8 h-8 text-gray-200 opacity-50" />
+              <Quote className="absolute top-6 left-6 w-8 h-8 text-gray-600 opacity-50" />
               <blockquote className="pt-6 pl-6">
-                <p className="text-lg text-gray-700 mb-6 relative z-10">"{testimonial.quote}"</p>
+                <p className="text-lg text-gray-200 mb-6 relative z-10">"{testimonial.quote}"</p>
                 <footer>
                   <div className="flex items-center">
-                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                      <span className="text-chatbot-primary font-medium">
+                    <div className="w-10 h-10 bg-blue-800 rounded-full flex items-center justify-center mr-3">
+                      <span className="text-blue-300 font-medium">
                         {testimonial.author.charAt(0)}
                       </span>
                     </div>
                     <div>
-                      <cite className="font-medium text-gray-900 not-italic">
+                      <cite className="font-medium text-gray-100 not-italic">
                         {testimonial.author}
                       </cite>
-                      <div className="text-sm text-gray-500">
+                      <div className="text-sm text-gray-400">
                         {testimonial.position}, {testimonial.company}
                       </div>
                     </div>

@@ -77,13 +77,13 @@ const Features = () => {
   }, []);
 
   return (
-    <section id="features" ref={featuresRef} className="py-20 bg-gradient-to-b from-white to-gray-50">
+    <section id="features" ref={featuresRef} className="py-20 bg-gradient-to-b from-gray-900 to-gray-800 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <h2 className="animate-on-scroll opacity-0 text-3xl md:text-4xl font-bold tracking-tight">
+          <h2 className="animate-on-scroll opacity-0 text-3xl md:text-4xl font-bold tracking-tight text-white">
             Powerful Features for Intelligent <span className="text-gradient">Conversations</span>
           </h2>
-          <p className="animate-on-scroll opacity-0 text-lg text-gray-600 animation-delay-200">
+          <p className="animate-on-scroll opacity-0 text-lg text-gray-300 animation-delay-200">
             Everything you need to create, deploy and optimize AI-powered knowledge assistants.
           </p>
         </div>
@@ -93,15 +93,15 @@ const Features = () => {
             <div 
               key={index}
               className={cn(
-                "animate-on-scroll opacity-0 bg-white rounded-xl p-6 border border-gray-100 shadow-card hover:shadow-strong transition-all",
+                "animate-on-scroll opacity-0 bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-card hover:shadow-strong transition-all",
                 index % 2 === 0 ? "animation-delay-200" : "animation-delay-500"
               )}
             >
-              <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mb-4 text-chatbot-primary">
+              <div className="w-12 h-12 rounded-full bg-blue-900/50 flex items-center justify-center mb-4 text-blue-400">
                 {feature.icon}
               </div>
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
+              <h3 className="text-xl font-semibold mb-2 text-white">{feature.title}</h3>
+              <p className="text-gray-300">{feature.description}</p>
             </div>
           ))}
         </div>

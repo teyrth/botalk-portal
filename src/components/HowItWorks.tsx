@@ -52,13 +52,13 @@ const HowItWorks = () => {
   }, []);
 
   return (
-    <section id="how-it-works" ref={sectionRef} className="py-20 bg-white">
+    <section id="how-it-works" ref={sectionRef} className="py-20 bg-gray-900 text-white">
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <h2 className="animate-on-scroll opacity-0 text-3xl md:text-4xl font-bold tracking-tight">
+          <h2 className="animate-on-scroll opacity-0 text-3xl md:text-4xl font-bold tracking-tight text-white">
             How <span className="text-gradient">Botalk</span> Works
           </h2>
-          <p className="animate-on-scroll opacity-0 text-lg text-gray-600 animation-delay-200">
+          <p className="animate-on-scroll opacity-0 text-lg text-gray-300 animation-delay-200">
             Our streamlined process gets you from setup to success in four simple steps.
           </p>
         </div>
@@ -75,22 +75,22 @@ const HowItWorks = () => {
             >
               <div className={cn("space-y-6", index % 2 !== 0 ? "md:pl-12" : "md:pr-12")}>
                 <div className="flex items-center gap-3">
-                  <div className="bg-blue-50 text-chatbot-primary font-bold px-3 py-1 rounded-full text-sm">
+                  <div className="bg-blue-900/50 text-blue-400 font-bold px-3 py-1 rounded-full text-sm">
                     {step.number}
                   </div>
-                  <div className="h-px flex-grow bg-gray-200"></div>
+                  <div className="h-px flex-grow bg-gray-700"></div>
                 </div>
-                <h3 className="text-2xl md:text-3xl font-bold">{step.title}</h3>
-                <p className="text-gray-600 text-lg leading-relaxed">{step.description}</p>
+                <h3 className="text-2xl md:text-3xl font-bold text-white">{step.title}</h3>
+                <p className="text-gray-300 text-lg leading-relaxed">{step.description}</p>
               </div>
               
               <div className={cn(
-                "aspect-video rounded-xl overflow-hidden shadow-strong border border-gray-100 bg-gray-50 flex items-center justify-center",
+                "aspect-video rounded-xl overflow-hidden shadow-strong border border-gray-700 bg-gray-800 flex items-center justify-center",
                 index % 2 !== 0 ? "md:order-first" : ""
               )}>
-                <div className="w-full h-full bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center">
-                    <div className="w-8 h-8 rounded-full bg-chatbot-primary animate-pulse"></div>
+                <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-blue-900/30 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-blue-400 animate-pulse"></div>
                   </div>
                 </div>
               </div>
