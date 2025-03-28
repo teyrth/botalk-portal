@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Bot, User, MoreHorizontal, Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useChat } from '@/hooks/useChat';
+import { searchKnowledge } from '@/data/companyKnowledge';
 
 type Message = {
   role: 'user' | 'bot';
@@ -10,87 +10,64 @@ type Message = {
   status?: 'typing' | 'complete';
 };
 
-// Demo questions and answers for the auto loop
-const demoQuestions = [
-  "What is Botalk?",
-  "How does the knowledge base work?",
-  "What industries can use this solution?",
-  "How quickly can I set up a chatbot?",
-  "What makes Botalk different from other chatbots?",
-  "Can I customize the chat interface?"
+const presetConversation: Message[] = [
+  {
+    role: 'user',
+    content: 'How do I integrate your chatbot with my website?',
+  },
+  {
+    role: 'bot',
+    content: 'You can integrate our chatbot in 3 simple steps:\n\n1. Set up your knowledge base\n2. Customize the chat interface\n3. Copy and paste our embed code to your website\n\nWould you like me to walk you through each step?',
+  },
+  {
+    role: 'user',
+    content: 'What types of data can I use to train the chatbot?',
+  },
 ];
 
 const ChatDemo = () => {
-  const { generateResponse, isLoading, isDemoMode, setIsDemoMode } = useChat();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const demoTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [currentDemoQuestion, setCurrentDemoQuestion] = useState(0);
   
-  // Auto demo loop effect
   useEffect(() => {
-    if (isDemoMode) {
-      startDemoLoop();
-    }
-    
-    return () => {
-      if (demoTimeoutRef.current) {
-        clearTimeout(demoTimeoutRef.current);
-      }
-    };
-  }, [isDemoMode, messages]);
-  
-  // Function to start the demo loop
-  const startDemoLoop = () => {
-    if (!isDemoMode) return;
-    
-    // Clear any existing timeout
-    if (demoTimeoutRef.current) {
-      clearTimeout(demoTimeoutRef.current);
-    }
-    
-    // If there's typing activity, wait for it to complete
-    if (isTyping) return;
-    
-    // Schedule the next demo question
-    demoTimeoutRef.current = setTimeout(() => {
-      if (!isDemoMode) return;
+    // Simulate initial loading of messages
+    const timeout = setTimeout(() => {
+      setMessages([presetConversation[0]]);
       
-      const nextQuestion = demoQuestions[currentDemoQuestion % demoQuestions.length];
-      
-      // Add user message
-      setMessages(prev => [...prev, { role: 'user', content: nextQuestion }]);
-      
-      // Show bot typing indicator
-      setIsTyping(true);
-      
-      // Generate bot response
-      setTimeout(async () => {
-        setIsTyping(false);
-        const response = await generateResponse(nextQuestion);
+      setTimeout(() => {
+        setIsTyping(true);
         
-        setMessages(prev => [...prev, { role: 'bot', content: response }]);
-        setCurrentDemoQuestion(current => current + 1);
-      }, 1500);
-      
-    }, 5000); // Wait 5 seconds between demo messages
-  };
+        setTimeout(() => {
+          setIsTyping(false);
+          setMessages([presetConversation[0], presetConversation[1]]);
+          
+          setTimeout(() => {
+            setMessages([...presetConversation.slice(0, 2), presetConversation[2]]);
+            
+            setTimeout(() => {
+              setIsTyping(true);
+              
+              setTimeout(() => {
+                setIsTyping(false);
+                setMessages([...presetConversation]);
+              }, 2000);
+            }, 1000);
+          }, 2000);
+        }, 2000);
+      }, 1000);
+    }, 1000);
+    
+    return () => clearTimeout(timeout);
+  }, []);
   
-  // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
   
-  // Handle manual user input
   const handleSendMessage = async () => {
     if (!input.trim()) return;
-    
-    // Clear any scheduled demo messages
-    if (demoTimeoutRef.current) {
-      clearTimeout(demoTimeoutRef.current);
-    }
     
     const userMessage = { role: 'user' as const, content: input };
     setMessages(prev => [...prev, userMessage]);
@@ -99,16 +76,18 @@ const ChatDemo = () => {
     // Show typing indicator
     setIsTyping(true);
     
-    // Generate response with isUserInput flag
-    const response = await generateResponse(input, true);
-    setIsTyping(false);
-    
-    const botResponse = {
-      role: 'bot' as const,
-      content: response,
-    };
-    
-    setMessages(prev => [...prev, botResponse]);
+    // Use local knowledge base with simulated delay
+    setTimeout(() => {
+      setIsTyping(false);
+      const localResponse = searchKnowledge(input);
+      
+      const botResponse = {
+        role: 'bot' as const,
+        content: localResponse,
+      };
+      
+      setMessages(prev => [...prev, botResponse]);
+    }, 1500);
   };
   
   return (
