@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Bot, User, MoreHorizontal, Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useChat } from '@/hooks/useChat';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 type Message = {
   role: 'user' | 'bot';
@@ -29,7 +28,6 @@ const ChatDemo = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const demoTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [currentDemoQuestion, setCurrentDemoQuestion] = useState(0);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
   
   // Auto demo loop effect
   useEffect(() => {
@@ -80,14 +78,9 @@ const ChatDemo = () => {
     }, 5000); // Wait 5 seconds between demo messages
   };
   
-  // Scroll to bottom of chat area without affecting page scroll
+  // Scroll to bottom when messages change
   useEffect(() => {
-    if (messagesEndRef.current) {
-      const scrollContainer = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
-      if (scrollContainer) {
-        scrollContainer.scrollTop = scrollContainer.scrollHeight;
-      }
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
   
   // Handle manual user input
@@ -119,7 +112,7 @@ const ChatDemo = () => {
   };
   
   return (
-    <div className="flex flex-col h-[500px] bg-gray-800 rounded-lg overflow-hidden border border-gray-700 shadow-lg">
+    <div className="flex flex-col h-full bg-gray-800 rounded-lg overflow-hidden border border-gray-700 shadow-lg">
       {/* Chat header */}
       <div className="px-4 py-3 border-b border-gray-700 flex justify-between items-center bg-gray-800">
         <div className="flex items-center gap-2">
@@ -137,7 +130,7 @@ const ChatDemo = () => {
       </div>
       
       {/* Chat messages */}
-      <ScrollArea className="flex-1 p-4 space-y-4 bg-gray-900" ref={scrollAreaRef}>
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-900">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -184,7 +177,7 @@ const ChatDemo = () => {
           </div>
         )}
         <div ref={messagesEndRef} />
-      </ScrollArea>
+      </div>
       
       {/* Chat input */}
       <div className="px-4 py-3 border-t border-gray-700 bg-gray-800">
