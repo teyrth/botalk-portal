@@ -29,6 +29,7 @@ const ChatDemo = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const demoTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [currentDemoQuestion, setCurrentDemoQuestion] = useState(0);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
   
   // Auto demo loop effect
   useEffect(() => {
@@ -79,10 +80,13 @@ const ChatDemo = () => {
     }, 5000); // Wait 5 seconds between demo messages
   };
   
-  // Scroll to bottom of chat container when messages change
+  // Scroll to bottom of chat area without affecting page scroll
   useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      const scrollContainer = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollContainer) {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      }
     }
   }, [messages, isTyping]);
   
@@ -132,56 +136,54 @@ const ChatDemo = () => {
         </button>
       </div>
       
-      {/* Chat messages - using ScrollArea to contain scrolling */}
-      <ScrollArea className="flex-1 h-full">
-        <div className="p-4 space-y-4 bg-gray-900">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={cn(
-                "flex gap-3 animate-slide-up",
-                message.role === 'user' ? "justify-end" : "justify-start"
-              )}
-            >
-              {message.role === 'bot' && (
-                <div className="w-8 h-8 rounded-full bg-blue-900 flex items-center justify-center flex-shrink-0">
-                  <Bot size={16} className="text-blue-400" />
-                </div>
-              )}
-              <div
-                className={cn(
-                  "max-w-[80%] rounded-2xl px-4 py-3 text-sm",
-                  message.role === 'user'
-                    ? "bg-blue-600 text-white rounded-tr-none"
-                    : "bg-gray-800 text-gray-200 rounded-tl-none border border-gray-700 shadow-sm"
-                )}
-              >
-                <p className="whitespace-pre-line">{message.content}</p>
-              </div>
-              {message.role === 'user' && (
-                <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center flex-shrink-0">
-                  <User size={16} className="text-gray-400" />
-                </div>
-              )}
-            </div>
-          ))}
-          
-          {isTyping && (
-            <div className="flex gap-3 justify-start animate-slide-up">
+      {/* Chat messages */}
+      <ScrollArea className="flex-1 p-4 space-y-4 bg-gray-900" ref={scrollAreaRef}>
+        {messages.map((message, index) => (
+          <div
+            key={index}
+            className={cn(
+              "flex gap-3 animate-slide-up",
+              message.role === 'user' ? "justify-end" : "justify-start"
+            )}
+          >
+            {message.role === 'bot' && (
               <div className="w-8 h-8 rounded-full bg-blue-900 flex items-center justify-center flex-shrink-0">
                 <Bot size={16} className="text-blue-400" />
               </div>
-              <div className="bg-gray-800 text-gray-200 rounded-2xl rounded-tl-none border border-gray-700 shadow-sm px-4 py-3">
-                <div className="flex space-x-1">
-                  <div className="w-2 h-2 rounded-full bg-gray-600 animate-pulse"></div>
-                  <div className="w-2 h-2 rounded-full bg-gray-600 animate-pulse animation-delay-200"></div>
-                  <div className="w-2 h-2 rounded-full bg-gray-600 animate-pulse animation-delay-500"></div>
-                </div>
+            )}
+            <div
+              className={cn(
+                "max-w-[80%] rounded-2xl px-4 py-3 text-sm",
+                message.role === 'user'
+                  ? "bg-blue-600 text-white rounded-tr-none"
+                  : "bg-gray-800 text-gray-200 rounded-tl-none border border-gray-700 shadow-sm"
+              )}
+            >
+              <p className="whitespace-pre-line">{message.content}</p>
+            </div>
+            {message.role === 'user' && (
+              <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center flex-shrink-0">
+                <User size={16} className="text-gray-400" />
+              </div>
+            )}
+          </div>
+        ))}
+        
+        {isTyping && (
+          <div className="flex gap-3 justify-start animate-slide-up">
+            <div className="w-8 h-8 rounded-full bg-blue-900 flex items-center justify-center flex-shrink-0">
+              <Bot size={16} className="text-blue-400" />
+            </div>
+            <div className="bg-gray-800 text-gray-200 rounded-2xl rounded-tl-none border border-gray-700 shadow-sm px-4 py-3">
+              <div className="flex space-x-1">
+                <div className="w-2 h-2 rounded-full bg-gray-600 animate-pulse"></div>
+                <div className="w-2 h-2 rounded-full bg-gray-600 animate-pulse animation-delay-200"></div>
+                <div className="w-2 h-2 rounded-full bg-gray-600 animate-pulse animation-delay-500"></div>
               </div>
             </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
       </ScrollArea>
       
       {/* Chat input */}
