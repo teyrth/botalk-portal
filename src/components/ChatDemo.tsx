@@ -4,6 +4,7 @@ import { Bot, User, MoreHorizontal, Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useChat } from '@/hooks/useChat';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Input } from '@/components/ui/input';
 
 type Message = {
   role: 'user' | 'bot';
@@ -119,7 +120,7 @@ const ChatDemo = () => {
   };
   
   return (
-    <div className="flex flex-col h-[500px] bg-gray-800 rounded-lg overflow-hidden border border-gray-700 shadow-lg">
+    <div className="flex flex-col h-[500px] md:h-[550px] w-full max-w-full bg-gray-800 rounded-lg overflow-hidden border border-gray-700 shadow-lg">
       {/* Chat header */}
       <div className="px-4 py-3 border-b border-gray-700 flex justify-between items-center bg-gray-800">
         <div className="flex items-center gap-2">
@@ -137,8 +138,8 @@ const ChatDemo = () => {
       </div>
       
       {/* Chat messages */}
-      <ScrollArea className="flex-1 p-4 space-y-4 bg-gray-900" ref={scrollAreaRef}>
-        <div className="space-y-4">
+      <ScrollArea className="flex-1 p-4 space-y-4 bg-gray-900 overflow-y-auto" ref={scrollAreaRef}>
+        <div className="space-y-4 pb-2">
           {messages.map((message, index) => (
             <div
               key={index}
@@ -188,26 +189,27 @@ const ChatDemo = () => {
         <div ref={messagesEndRef} />
       </ScrollArea>
       
-      {/* Chat input - ensure this is visible and properly sized */}
-      <div className="px-4 py-3 border-t border-gray-700 bg-gray-800">
-        <div className="flex gap-2">
-          <input
+      {/* Chat input with improved visibility and spacing */}
+      <div className="px-4 py-4 border-t border-gray-700 bg-gray-800 mt-auto">
+        <div className="flex gap-2 items-center">
+          <Input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
             placeholder="Ask me anything..."
-            className="flex-1 bg-gray-700 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all text-white placeholder-gray-400"
+            className="flex-1 bg-gray-700 rounded-full text-white placeholder-gray-400 h-11 px-4 border-gray-600 focus:border-blue-500"
           />
           <button
             onClick={handleSendMessage}
             disabled={!input.trim()}
             className={cn(
-              "w-10 h-10 rounded-full flex items-center justify-center transition-colors",
+              "w-11 h-11 rounded-full flex items-center justify-center transition-colors",
               input.trim()
                 ? "bg-blue-600 text-white hover:bg-blue-700"
                 : "bg-gray-700 text-gray-500"
             )}
+            aria-label="Send message"
           >
             <Send size={18} />
           </button>
